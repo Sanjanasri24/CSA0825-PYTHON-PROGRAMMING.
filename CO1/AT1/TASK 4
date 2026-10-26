@@ -1,0 +1,10 @@
+BASE_RATE = 30.00
+litres, fat, snf = 8.5, 4.2, 8.7
+fat_steps = round((fat - 3.5) / 0.1)
+snf_steps = round((snf - 8.5) / 0.1)
+rate = BASE_RATE + fat_steps * 0.40 + snf_steps * 0.30
+payment = litres * rate
+print("Fat steps:", fat_steps)
+print("SNF steps:", snf_steps)
+print(f"Rate: Rs. {rate:.2f}")
+print(f"Payment: Rs. {payment:.2f}")
