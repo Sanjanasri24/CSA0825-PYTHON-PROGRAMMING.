@@ -1,0 +1,16 @@
+from decimal import Decimal, ROUND_HALF_UP
+BASE_RATE = Decimal("30.00")
+FAT_STEP_RATE = Decimal("0.40")
+SNF_STEP_RATE = Decimal("0.30")
+def rate_per_litre(fat, snf):
+fat_steps = round((fat - 3.5) / 0.1)
+snf_steps = round((snf - 8.5) / 0.1)
+rate = BASE_RATE + Decimal(str(fat_steps)) * FAT_STEP_RATE
+rate += Decimal(str(snf_steps)) * SNF_STEP_RATE
+return rate.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+def payout(litres, fat, snf):
+rate = rate_per_litre(fat, snf)
+amount = Decimal(str(litres)) * rate
+return amount.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+print("Rate:", rate_per_litre(4.2, 8.7))
+print("Payment:", payout(8.5, 4.2, 8.7))
