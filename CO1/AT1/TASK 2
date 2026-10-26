@@ -1,0 +1,8 @@
+from decimal import Decimal
+amounts = ["10000.10", "10000.20", "13400.00"]
+float_total = sum(float(x) for x in amounts)
+decimal_total = sum((Decimal(x) for x in amounts), Decimal("0"))
+print("Float total:", float_total)
+print("Decimal total:", decimal_total)
+print("Float equals 33400.30:", float_total == 33400.30)
+print("Decimal equals 33400.30:", decimal_total == Decimal("33400.30"))
