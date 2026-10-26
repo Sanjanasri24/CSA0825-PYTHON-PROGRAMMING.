@@ -1,0 +1,12 @@
+# Save this section as milkrate.py
+def rate_per_litre(fat, snf):
+return 30.00 + round((fat - 3.5) / 0.1) * 0.40 + round((snf - 8.5) / 0.1) * 0.30
+def payout(litres, fat, snf):
+return litres * rate_per_litre(fat, snf)
+# Save the following in main.py in the same folder:
+import milkrate
+entries = [(10, 3.5, 8.5), (8.5, 4.2, 8.7), (12, 3.1, 8.3)]
+for litres, fat, snf in entries:
+rate = milkrate.rate_per_litre(fat, snf)
+pay = milkrate.payout(litres, fat, snf)
+print(f"{litres:5g} L fat {fat:.1f} snf {snf:.1f} rate {rate:6.2f} pay {pay:8.2f}")
