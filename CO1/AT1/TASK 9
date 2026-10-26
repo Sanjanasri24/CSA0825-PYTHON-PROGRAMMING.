@@ -1,0 +1,12 @@
+def calculate(litres, fat, snf):
+rate = 30 + round((fat - 3.5) / 0.1) * 0.40
+rate += round((snf - 8.5) / 0.1) * 0.30
+return rate, litres * rate
+tests = [(10, 3.5, 8.5), (8.5, 4.2, 8.7),
+(12, 3.1, 8.3), (5, 2.0, 8.5), (5, 7.0, 8.5)]
+total = 0.0
+for litres, fat, snf in tests:
+rate, payment = calculate(litres, fat, snf)
+total += payment
+print(f"Rate Rs. {rate:.2f}; Payment Rs. {payment:.2f}")
+print(f"Total: Rs. {total:.2f}")
