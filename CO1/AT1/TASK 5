@@ -1,0 +1,15 @@
+BASE_RATE = 30.00
+try:
+litres = float(input("Litres: "))
+fat = float(input("Fat % (2 to 7): "))
+snf = float(input("SNF %: "))
+if litres <= 0:
+raise ValueError("Litres must be positive.")
+if not 2 <= fat <= 7:
+raise ValueError("Fat must be between 2 and 7.")
+rate = BASE_RATE + round((fat - 3.5) / 0.1) * 0.40
+rate += round((snf - 8.5) / 0.1) * 0.30
+print(f"Rate: Rs. {rate:.2f}")
+print(f"Payment: Rs. {litres * rate:.2f}")
+except ValueError as error:
+print("Invalid input:", error)
