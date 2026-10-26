@@ -1,0 +1,29 @@
+from decimal import Decimal, ROUND_HALF_UP
+BASE_RATE = Decimal("32.00")
+FAT_STEP_RATE = Decimal("0.45")
+SNF_STEP_RATE = Decimal("0.30")
+STEP = Decimal("0.1")
+def steps(value, base):
+return ((value - base) / STEP).quantize(Decimal("1"), rounding=ROUND_HALF_UP)
+def rate_per_litre(fat, snf):
+fat_steps = steps(fat, Decimal("3.50"))
+snf_steps = steps(snf, Decimal("8.50"))
+return BASE_RATE + fat_steps * FAT_STEP_RATE + snf_steps * SNF_STEP_RATE
+def payout(litres, fat, snf):
+amount = litres * rate_per_litre(fat, snf)
+return amount.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+entries = [
+(Decimal("300.00"), Decimal("4.25"), Decimal("8.65")),
+(Decimal("250.50"), Decimal("3.75"), Decimal("8.55")),
+]
+total_litres = sum((e[0] for e in entries), Decimal("0"))
+total_payment = sum((payout(*e) for e in entries), Decimal("0"))
+bonus = total_litres * Decimal("0.50") if total_litres > 500 else Decimal("0.00")
+final_total = (total_payment + bonus).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+for litres, fat, snf in entries:
+rate = rate_per_litre(fat, snf)
+print(f"Litres {litres} | Rate Rs. {rate:.2f} | Payment Rs. {payout(litres, fat, snf):.2f}")
+print("Total litres:", total_litres)
+print("Payment total:", total_payment.quantize(Decimal("0.01")))
+print("Bonus:", bonus.quantize(Decimal("0.01")))
+print("Final total:", final_total)
