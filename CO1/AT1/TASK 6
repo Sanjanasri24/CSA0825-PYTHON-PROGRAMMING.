@@ -1,0 +1,12 @@
+def rate_per_litre(fat, snf):
+return 30.00 + round((fat - 3.5) / 0.1) * 0.40 + round((snf - 8.5) / 0.1) * 0.30
+def payout(litres, fat, snf):
+return litres * rate_per_litre(fat, snf)
+def ten_day_total(daily_payment):
+return daily_payment * 10
+litres, fat, snf = 10, 3.5, 8.5
+rate = rate_per_litre(fat, snf)
+payment = payout(litres, fat, snf)
+print(f"Rate: Rs. {rate:.2f}")
+print(f"Payment: Rs. {payment:.2f}")
+print(f"Ten-day total: Rs. {ten_day_total(payment):.2f}")
