@@ -1,0 +1,19 @@
+BASE_RATE = 30.00
+BASE_FAT = 3.5
+BASE_SNF = 8.5
+FAT_STEP = 0.40
+SNF_STEP = 0.30
+farmer_id = input("Farmer ID: ")
+litres = float(input("Litres: "))
+fat = float(input("Fat percentage: "))
+snf = float(input("SNF percentage: "))
+shift = input("Shift (Morning/Evening): ")
+fat_steps = round((fat - BASE_FAT) / 0.1)
+snf_steps = round((snf - BASE_SNF) / 0.1)
+rate = BASE_RATE + fat_steps * FAT_STEP + snf_steps * SNF_STEP
+payment = litres * rate
+print("\nFarmer ID:", farmer_id)
+print("Shift:", shift)
+print(f"Rate per litre: Rs. {rate:.2f}")
+print(f"Payment: Rs. {payment:.2f}")
+print(f"Ten-day total (same payment each day): Rs. {payment * 10:.2f}")
