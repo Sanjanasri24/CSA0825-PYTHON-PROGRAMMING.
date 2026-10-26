@@ -1,0 +1,12 @@
+BASE_RATE = 30.00
+FAT_STEP = 0.40
+litres = 10
+fat = 3.5
+print("Base rate:", BASE_RATE)
+print("Type of litres:", type(litres). name )
+print("Type of fat:", type(fat). name )
+a = "Morning"
+b = "Evening"
+print("Before swap:", a, b)
+a, b = b, a
+print("After swap:", a, b)
