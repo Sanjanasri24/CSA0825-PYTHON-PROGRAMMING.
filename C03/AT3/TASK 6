@@ -1,0 +1,30 @@
+timetable = {
+ "12601": {"name":"Chennai Mail", "stops":[("Chennai","06:00","06:10"),("Villupuram","08:00","08:05"),("Trichy","10:30","10:35")], "days":{"Mon","Tue","Wed","Thu","Fri","Sat","Sun"}},
+ "12602": {"name":"Express A", "stops":[("Chennai","07:00","07:10"),("Villupuram","09:00","09:05")], "days":{"Mon","Wed","Fri"}},
+ "12603": {"name":"Express B", "stops":[("Madurai","05:00","05:05"),("Trichy","07:00","07:05"),("Villupuram","10:00","10:05")], "days":{"Tue","Thu","Sat"}},
+ "12604": {"name":"Passenger C", "stops":[("Chennai","08:00","08:05"),("Cuddalore","09:00","09:05")], "days":{"Sun"}},
+ "12605": {"name":"Express D", "stops":[("Coimbatore","06:00","06:05"),("Villupuram","11:00","11:05")], "days":{"Mon","Tue","Wed","Thu","Fri"}}
+}
+
+station = "Villupuram"
+day = "Mon"
+matches = []
+for number, info in timetable.items():
+    if day in info["days"]:
+        for stop, arrival, departure in info["stops"]:
+            if stop == station:
+                matches.append((departure, number, info["name"]))
+                break
+
+for departure, number, name in sorted(matches, key=lambda x: x[0]):
+    print(number, name, departure)
+
+# Third station's departure time (index 2)
+print(timetable["12601"]["stops"][2][2])
+
+# Build station index: station -> list of train numbers
+index = {}
+for number, info in timetable.items():
+    for stop, arrival, departure in info["stops"]:
+        index.setdefault(stop, []).append(number)
+print("Trains at Villupuram:", index.get("Villupuram", []))
