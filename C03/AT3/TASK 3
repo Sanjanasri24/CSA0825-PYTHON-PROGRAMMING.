@@ -1,0 +1,48 @@
+import re
+from collections import Counter, defaultdict
+import time
+
+calls = [
+    ("Villupuram", "Seeds not received; seeds delayed!"),
+    ("Cuddalore", "Fertiliser price high."),
+    ("Villupuram", "Seeds price high; subsidy not received.")
+]
+STOP = {"not", "high", "the", "is", "a"}
+
+def words(text):
+    return re.findall(r"\\b[a-z]+\\b", text.lower())
+
+def frequencies(texts, stop):
+    counts = {}
+    for text in texts:
+        for word in words(text):
+            if word not in stop:
+                counts[word] = counts.get(word, 0) + 1
+    return counts
+
+district_groups = defaultdict(list)
+for district, complaint in calls:
+    district_groups[district].append(complaint)
+
+texts = [complaint for _, complaint in calls]
+counts = frequencies(texts, STOP)
+print("Word counts:", counts)
+print("Top 3:", sorted(counts.items(), key=lambda x: (-x[1], x[0]))[:3])
+print("By district:", dict(district_groups))
+print("Counter:", Counter(w for t in texts for w in words(t) if w not in STOP))
+
+# Performance experiment: dictionary counting vs list.count()
+for n in (1000, 10000, 100000):
+    data = ["seed", "price", "water", "seed", "crop"] * (n//5)
+    start = time.perf_counter()
+    d = {}
+    for w in data: d[w] = d.get(w, 0) + 1
+    dict_time = time.perf_counter()-start
+    start = time.perf_counter()
+    unique = set(data)
+    slow = {w: data.count(w) for w in unique}
+    list_time = time.perf_counter()-start
+    start = time.perf_counter()
+    counter = Counter(data)
+    counter_time = time.perf_counter()-start
+    print(n, dict_time, list_time, counter_time)
