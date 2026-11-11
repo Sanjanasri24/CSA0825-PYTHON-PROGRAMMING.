@@ -1,0 +1,17 @@
+import random
+readings = [round(random.uniform(0, 40), 1) for _ in range(365)]
+
+weekly_totals = [sum(readings[i:i+7]) for i in range(0, len(readings), 7)]
+wettest = max(readings)
+driest = min(readings)
+print("Wettest day (day, mm):", readings.index(wettest) + 1, wettest)
+print("Driest day (day, mm):", readings.index(driest) + 1, driest)
+
+moving_avg = [sum(readings[i:i+7]) / 7
+              for i in range(len(readings)-6)]
+dry_days = [i+1 for i, value in enumerate(readings) if value == 0]
+
+print("Number of weekly totals:", len(weekly_totals))
+print("First 5 weekly totals:", weekly_totals[:5])
+print("First 5 moving averages:", moving_avg[:5])
+print("Dry days:", dry_days)
