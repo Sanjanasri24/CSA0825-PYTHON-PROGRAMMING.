@@ -1,0 +1,44 @@
+import copy, sys, time
+
+stop_map = {(13.0827, 80.2707): "Chennai Central",
+            (13.0418, 80.2341): "T. Nagar"}
+for (lat, lon), name in stop_map.items():
+    print(name, "at", lat, lon)
+
+original = [[1, 2], [3, 4]]
+alias = original
+shallow1 = copy.copy(original)
+shallow2 = original[:]
+deep = copy.deepcopy(original)
+original[0][0] = 99
+print("alias:", alias)
+print("shallow:", shallow1, shallow2)
+print("deep:", deep)
+
+bad = [[0]*3]*3
+good = [[0 for _ in range(3)] for _ in range(3)]
+print("bad rows same?", bad[0] is bad[1])
+print("good rows same?", good[0] is good[1])
+
+try:
+    print({[13.0418, 80.2341]: "T. Nagar"})
+except TypeError as e:
+    print(type(e).__name__, e)
+
+t = (1, 2, [3, 4])
+t[2].append(5)
+print("tuple containing list:", t)
+
+values = list(range(1000000))
+tuple_values = tuple(values)
+print("list size:", sys.getsizeof(values))
+print("tuple size:", sys.getsizeof(tuple_values))
+
+for factory in (list, tuple):
+    start = time.perf_counter()
+    obj = factory(range(1000000))
+    create_time = time.perf_counter()-start
+    start = time.perf_counter()
+    _ = obj[500000]
+    index_time = time.perf_counter()-start
+    print(factory.__name__, create_time, index_time)
