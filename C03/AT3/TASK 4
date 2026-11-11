@@ -1,0 +1,26 @@
+import random, time
+
+for n in (10000, 100000, 1000000):
+    data = list(range(n))
+    s = set(data)
+    target = n-1
+    start = time.perf_counter()
+    target in data
+    list_time = time.perf_counter()-start
+    start = time.perf_counter()
+    target in s
+    set_time = time.perf_counter()-start
+    print(n, "list:", list_time, "set:", set_time)
+
+# Compare nested loops and set intersection
+a = set(range(0, 10000))
+b = set(range(5000, 15000))
+start = time.perf_counter()
+common = [x for x in a for y in b if x == y]
+nested_time = time.perf_counter()-start
+start = time.perf_counter()
+common_set = a & b
+set_time = time.perf_counter()-start
+print("nested:", nested_time, "set intersection:", set_time)
+print("empty:", set() & set())
+print("identical:", a & a == a)
