@@ -1,0 +1,51 @@
+import re, time, random
+
+def normalize_phone(phone):
+    digits = re.sub(r"\\D", "", phone or "")
+    if digits.startswith("91") and len(digits) == 12:
+        digits = digits[2:]
+    return digits
+
+def normalize_name(name):
+    return " ".join((name or "").strip().lower().split())
+
+def merge_contacts(contacts):
+    merged = {}
+    for contact in contacts:
+        name = (contact.get("name") or "").strip()
+        emails = contact.get("emails") or []
+        phones = contact.get("phones") or []
+        for phone in phones:
+            key = normalize_phone(phone)
+            if not key:
+                continue
+            if key not in merged:
+                merged[key] = {"name": name or "Unknown",
+                               "numbers": set(), "emails": set()}
+            if name and merged[key]["name"] == "Unknown":
+                merged[key]["name"] = name
+            merged[key]["numbers"].add(phone.strip())
+            for email in emails:
+                if email and email.strip():
+                    merged[key]["emails"].add(email.strip().lower())
+    return list(merged.values())
+
+contacts = [
+ {"name":"Dr. Ravi", "phones":["+91 98400 12345"], "emails":["ravi@mail.com"]},
+ {"name":"ravi kumar", "phones":["9840012345"], "emails":["RAVI@mail.com","rk@mail.com"]},
+ {"name":"Anu", "phones":["+91 90000 11111"], "emails":[]},
+ {"name":"Missing phone", "phones":[""], "emails":["x@mail.com"]},
+ {"name":"No details", "phones":[], "emails":[]}
+]
+result = merge_contacts(contacts)
+for item in result:
+    print(item)
+
+# Benchmark dictionary merge with 1,000 and 100,000 generated contacts
+for n in (1000, 100000):
+    sample = [{"name":"Person"+str(i), "phones":["90000"+str(i).zfill(5)],
+               "emails":[]} for i in range(n)]
+    start=time.perf_counter()
+    merged_result=merge_contacts(sample)
+    print(n, "contacts:", time.perf_counter()-start, "seconds",
+          "merged:", len(merged_result))
