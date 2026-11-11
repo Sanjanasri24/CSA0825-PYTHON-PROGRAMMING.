@@ -1,0 +1,23 @@
+import random, time, sys
+
+readings = [4.0, 6.5, 55.0, -60.0, 9.0, 3.0, 51.0]
+valid_loop = []
+for c in readings:
+    if -50 <= c <= 50:
+        valid_loop.append(c)
+fahrenheit_loop = [(c * 9/5) + 32 for c in valid_loop]
+
+valid_comp = [c for c in readings if -50 <= c <= 50]
+fahrenheit_comp = [(c * 9/5) + 32 for c in valid_comp]
+
+valid_filter = list(filter(lambda c: -50 <= c <= 50, readings))
+fahrenheit_map = list(map(lambda c: c * 9/5 + 32, valid_filter))
+
+alarms = [(minute, c) for minute, c in enumerate(readings, start=1)
+          if c < 2 or c > 8]
+
+print("Valid Celsius:", valid_comp)
+print("Fahrenheit:", fahrenheit_comp)
+print("Alarm minutes:", alarms)
+print("All versions same:", valid_loop == valid_comp == valid_filter)
+print("Fahrenheit same:", fahrenheit_loop == fahrenheit_map)
